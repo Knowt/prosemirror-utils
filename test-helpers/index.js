@@ -1,6 +1,6 @@
 import { builders } from 'prosemirror-test-builder';
 import { EditorState, TextSelection, NodeSelection } from 'prosemirror-state';
-import { cellAround, CellSelection } from 'prosemirror-tables';
+import { cellAround, CellSelection } from 'prosemirror-tables-contently';
 import { EditorView } from 'prosemirror-view';
 import schema from './schema';
 

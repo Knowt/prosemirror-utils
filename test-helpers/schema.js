@@ -1,6 +1,6 @@
 import { Schema } from 'prosemirror-model';
 import { nodes, marks } from 'prosemirror-schema-basic';
-import { tableNodes } from 'prosemirror-tables';
+import { tableNodes } from 'prosemirror-tables-contently';
 
 const { doc, paragraph, text, horizontal_rule: rule, blockquote } = nodes;
 const { table, table_cell, table_header, table_row } = tableNodes({

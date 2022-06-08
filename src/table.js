@@ -5,7 +5,7 @@ import {
   addRow,
   removeColumn,
   removeRow
-} from 'prosemirror-tables';
+} from 'prosemirror-tables-contently';
 import { Selection } from 'prosemirror-state';
 import { findParentNode, findParentNodeClosestToPos } from './selection';
 import { setTextSelection, safeInsert } from './transforms';
