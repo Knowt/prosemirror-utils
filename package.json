@@ -1,5 +1,5 @@
 {
-  "name": "prosemirror-utils-knowt",
+  "name": "@knowt/prosemirror-utils",
   "version": "0.9.6",
   "description": "This library is virtually the same as atlassian/prosemirror-utils that uses prosemirror-tables-contently in place of prosemirror-tables",
   "main": "dist/index.js",
