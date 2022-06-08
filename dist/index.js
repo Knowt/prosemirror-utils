@@ -4,7 +4,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 var prosemirrorState = require('prosemirror-state');
 var prosemirrorModel = require('prosemirror-model');
-var prosemirrorTablesContently = require('prosemirror-tables-contently');
+var prosemirrorTablesContently = require('@knowt/prosemirror-tables');
 
 // :: (nodeType: union<NodeType, [NodeType]>) → (tr: Transaction) → Transaction
 // Returns a new transaction that removes a node of a given `nodeType`. It will return an original transaction if parent node hasn't been found.

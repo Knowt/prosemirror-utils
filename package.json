@@ -1,7 +1,7 @@
 {
   "name": "@knowt/prosemirror-utils",
   "version": "0.9.6",
-  "description": "This library is virtually the same as atlassian/prosemirror-utils that uses prosemirror-tables-contently in place of prosemirror-tables",
+  "description": "This library is virtually the same as atlassian/prosemirror-utils that uses @knowt/prosemirror-tables in place of prosemirror-tables",
   "main": "dist/index.js",
   "author": {
     "name": "Eduard Shvedai",
@@ -35,8 +35,7 @@
   },
   "peerDependencies": {
     "prosemirror-model": "^1.0.0",
-    "prosemirror-state": "^1.0.1",
-    "prosemirror-tables-contently": "^1.1.2"
+    "prosemirror-state": "^1.0.1"
   },
   "devDependencies": {
     "builddocs": "^0.3.2",
@@ -47,7 +46,6 @@
     "prosemirror-model": "^1.0.0",
     "prosemirror-schema-basic": "^1.0.0",
     "prosemirror-state": "^1.0.1",
-    "prosemirror-tables-contently": "^1.1.2",
     "prosemirror-test-builder": "^1.0.1",
     "prosemirror-view": "^1.1.1",
     "rollup": "^2.75.6"
@@ -61,5 +59,8 @@
   "prettier": {
     "singleQuote": true,
     "trailing-comma": "es5"
+  },
+  "dependencies": {
+    "@knowt/prosemirror-tables": "github:Knowt/prosemirror-tables"
   }
 }

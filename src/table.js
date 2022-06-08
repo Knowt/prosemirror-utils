@@ -5,7 +5,7 @@ import {
   addRow,
   removeColumn,
   removeRow
-} from 'prosemirror-tables-contently';
+} from '@knowt/prosemirror-tables';
 import { Selection } from 'prosemirror-state';
 import { findParentNode, findParentNodeClosestToPos } from './selection';
 import { setTextSelection, safeInsert } from './transforms';
@@ -822,9 +822,10 @@ export const cloneRowAt = rowIndex => tr => {
         }
       }
 
-      return safeInsert(tableNodes.row.create(cloneRow.attrs, cells), rowPos)(
-        tr
-      );
+      return safeInsert(
+        tableNodes.row.create(cloneRow.attrs, cells),
+        rowPos
+      )(tr);
     }
   }
   return tr;

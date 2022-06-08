@@ -1,6 +1,6 @@
 import { NodeSelection } from 'prosemirror-state';
 import { Fragment, Node as PMNode } from 'prosemirror-model';
-import { TableMap } from 'prosemirror-tables-contently';
+import { TableMap } from '@knowt/prosemirror-tables';
 import { setTextSelection } from './transforms';
 import { findParentNodeClosestToPos } from './selection';
 
