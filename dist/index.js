@@ -4,7 +4,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 var prosemirrorState = require('prosemirror-state');
 var prosemirrorModel = require('prosemirror-model');
-var prosemirrorTablesContently = require('@knowt/prosemirror-tables');
+var prosemirrorTables = require('@knowt/prosemirror-tables');
 
 // :: (nodeType: union<NodeType, [NodeType]>) → (tr: Transaction) → Transaction
 // Returns a new transaction that removes a node of a given `nodeType`. It will return an original transaction if parent node hasn't been found.
@@ -399,9 +399,7 @@ const createCell = (cellType, cellContent = null) => {
 // (rect: {left: number, right: number, top: number, bottom: number}) → (selection: Selection) → boolean
 // Checks if a given CellSelection rect is selected
 const isRectSelected = rect => selection => {
-  const map = prosemirrorTablesContently.TableMap.get(
-    selection.$anchorCell.node(-1)
-  );
+  const map = prosemirrorTables.TableMap.get(selection.$anchorCell.node(-1));
   const start = selection.$anchorCell.start(-1);
   const cells = map.cellsInRect(rect);
   const selectedCells = map.cellsInRect(
@@ -475,7 +473,7 @@ const transpose = array => {
 // ]
 // ```
 const convertTableNodeToArrayOfRows = tableNode => {
-  const map = prosemirrorTablesContently.TableMap.get(tableNode);
+  const map = prosemirrorTables.TableMap.get(tableNode);
   const rows = [];
   for (let rowIndex = 0; rowIndex < map.height; rowIndex++) {
     const rowCells = [];
@@ -528,7 +526,7 @@ const convertTableNodeToArrayOfRows = tableNode => {
 //
 const convertArrayOfRowsToTableNode = (tableNode, arrayOfNodes) => {
   const rowsPM = [];
-  const map = prosemirrorTablesContently.TableMap.get(tableNode);
+  const map = prosemirrorTables.TableMap.get(tableNode);
   for (let rowIndex = 0; rowIndex < map.height; rowIndex++) {
     const row = tableNode.child(rowIndex);
     const rowCells = [];
@@ -919,7 +917,7 @@ const findTable = selection =>
 // }
 // ```
 const isCellSelection = selection => {
-  return selection instanceof prosemirrorTablesContently.CellSelection;
+  return selection instanceof prosemirrorTables.CellSelection;
 };
 
 // :: (selection: Selection) → ?{left: number, right: number, top: number, bottom: number}
@@ -933,9 +931,7 @@ const getSelectionRect = selection => {
     return;
   }
   const start = selection.$anchorCell.start(-1);
-  const map = prosemirrorTablesContently.TableMap.get(
-    selection.$anchorCell.node(-1)
-  );
+  const map = prosemirrorTables.TableMap.get(selection.$anchorCell.node(-1));
   return map.rectBetween(
     selection.$anchorCell.pos - start,
     selection.$headCell.pos - start
@@ -950,9 +946,7 @@ const getSelectionRect = selection => {
 // ```
 const isColumnSelected = columnIndex => selection => {
   if (isCellSelection(selection)) {
-    const map = prosemirrorTablesContently.TableMap.get(
-      selection.$anchorCell.node(-1)
-    );
+    const map = prosemirrorTables.TableMap.get(selection.$anchorCell.node(-1));
     return isRectSelected({
       left: columnIndex,
       right: columnIndex + 1,
@@ -972,9 +966,7 @@ const isColumnSelected = columnIndex => selection => {
 // ```
 const isRowSelected = rowIndex => selection => {
   if (isCellSelection(selection)) {
-    const map = prosemirrorTablesContently.TableMap.get(
-      selection.$anchorCell.node(-1)
-    );
+    const map = prosemirrorTables.TableMap.get(selection.$anchorCell.node(-1));
     return isRectSelected({
       left: 0,
       right: map.width,
@@ -994,9 +986,7 @@ const isRowSelected = rowIndex => selection => {
 // ```
 const isTableSelected = selection => {
   if (isCellSelection(selection)) {
-    const map = prosemirrorTablesContently.TableMap.get(
-      selection.$anchorCell.node(-1)
-    );
+    const map = prosemirrorTables.TableMap.get(selection.$anchorCell.node(-1));
     return isRectSelected({
       left: 0,
       right: map.width,
@@ -1017,7 +1007,7 @@ const isTableSelected = selection => {
 const getCellsInColumn = columnIndex => selection => {
   const table = findTable(selection);
   if (table) {
-    const map = prosemirrorTablesContently.TableMap.get(table.node);
+    const map = prosemirrorTables.TableMap.get(table.node);
     const indexes = Array.isArray(columnIndex)
       ? columnIndex
       : Array.from([columnIndex]);
@@ -1050,7 +1040,7 @@ const getCellsInColumn = columnIndex => selection => {
 const getCellsInRow = rowIndex => selection => {
   const table = findTable(selection);
   if (table) {
-    const map = prosemirrorTablesContently.TableMap.get(table.node);
+    const map = prosemirrorTables.TableMap.get(table.node);
     const indexes = Array.isArray(rowIndex) ? rowIndex : Array.from([rowIndex]);
     return indexes.reduce((acc, index) => {
       if (index >= 0 && index <= map.height - 1) {
@@ -1081,7 +1071,7 @@ const getCellsInRow = rowIndex => selection => {
 const getCellsInTable = selection => {
   const table = findTable(selection);
   if (table) {
-    const map = prosemirrorTablesContently.TableMap.get(table.node);
+    const map = prosemirrorTables.TableMap.get(table.node);
     const cells = map.cellsInRect({
       left: 0,
       right: map.width,
@@ -1100,7 +1090,7 @@ const select = type => (index, expand) => tr => {
   const table = findTable(tr.selection);
   const isRowSelection = type === 'row';
   if (table) {
-    const map = prosemirrorTablesContently.TableMap.get(table.node);
+    const map = prosemirrorTables.TableMap.get(table.node);
 
     // Check if the index is valid
     if (index >= 0 && index < (isRowSelection ? map.height : map.width)) {
@@ -1148,9 +1138,7 @@ const select = type => (index, expand) => tr => {
       const $anchor = tr.doc.resolve(anchor);
 
       return cloneTr(
-        tr.setSelection(
-          new prosemirrorTablesContently.CellSelection($anchor, $head)
-        )
+        tr.setSelection(new prosemirrorTables.CellSelection($anchor, $head))
       );
     }
   }
@@ -1190,7 +1178,7 @@ const selectRow = select('row');
 const selectTable = tr => {
   const table = findTable(tr.selection);
   if (table) {
-    const { map } = prosemirrorTablesContently.TableMap.get(table.node);
+    const { map } = prosemirrorTables.TableMap.get(table.node);
     if (map && map.length) {
       const head = table.start + map[0];
       const anchor = table.start + map[map.length - 1];
@@ -1198,9 +1186,7 @@ const selectTable = tr => {
       const $anchor = tr.doc.resolve(anchor);
 
       return cloneTr(
-        tr.setSelection(
-          new prosemirrorTablesContently.CellSelection($anchor, $head)
-        )
+        tr.setSelection(new prosemirrorTables.CellSelection($anchor, $head))
       );
     }
   }
@@ -1238,10 +1224,10 @@ const emptyCell = (cell, schema) => tr => {
 const addColumnAt = columnIndex => tr => {
   const table = findTable(tr.selection);
   if (table) {
-    const map = prosemirrorTablesContently.TableMap.get(table.node);
+    const map = prosemirrorTables.TableMap.get(table.node);
     if (columnIndex >= 0 && columnIndex <= map.width) {
       return cloneTr(
-        prosemirrorTablesContently.addColumn(
+        prosemirrorTables.addColumn(
           tr,
           {
             map,
@@ -1628,7 +1614,7 @@ const moveColumn = (originColumnIndex, targetColumnIndex, opts) => tr => {
 const addRowAt = (rowIndex, clonePreviousRow) => tr => {
   const table = findTable(tr.selection);
   if (table) {
-    const map = prosemirrorTablesContently.TableMap.get(table.node);
+    const map = prosemirrorTables.TableMap.get(table.node);
     const cloneRowIndex = rowIndex - 1;
 
     if (clonePreviousRow && cloneRowIndex >= 0) {
@@ -1637,7 +1623,7 @@ const addRowAt = (rowIndex, clonePreviousRow) => tr => {
 
     if (rowIndex >= 0 && rowIndex <= map.height) {
       return cloneTr(
-        prosemirrorTablesContently.addRow(
+        prosemirrorTables.addRow(
           tr,
           {
             map,
@@ -1663,7 +1649,7 @@ const addRowAt = (rowIndex, clonePreviousRow) => tr => {
 const cloneRowAt = rowIndex => tr => {
   const table = findTable(tr.selection);
   if (table) {
-    const map = prosemirrorTablesContently.TableMap.get(table.node);
+    const map = prosemirrorTables.TableMap.get(table.node);
 
     if (rowIndex >= 0 && rowIndex <= map.height) {
       const tableNode = table.node;
@@ -1733,11 +1719,11 @@ const cloneRowAt = rowIndex => tr => {
 const removeColumnAt = columnIndex => tr => {
   const table = findTable(tr.selection);
   if (table) {
-    const map = prosemirrorTablesContently.TableMap.get(table.node);
+    const map = prosemirrorTables.TableMap.get(table.node);
     if (columnIndex === 0 && map.width === 1) {
       return removeTable(tr);
     } else if (columnIndex >= 0 && columnIndex <= map.width) {
-      prosemirrorTablesContently.removeColumn(
+      prosemirrorTables.removeColumn(
         tr,
         {
           map,
@@ -1763,11 +1749,11 @@ const removeColumnAt = columnIndex => tr => {
 const removeRowAt = rowIndex => tr => {
   const table = findTable(tr.selection);
   if (table) {
-    const map = prosemirrorTablesContently.TableMap.get(table.node);
+    const map = prosemirrorTables.TableMap.get(table.node);
     if (rowIndex === 0 && map.height === 1) {
       return removeTable(tr);
     } else if (rowIndex >= 0 && rowIndex <= map.height) {
-      prosemirrorTablesContently.removeRow(
+      prosemirrorTables.removeRow(
         tr,
         {
           map,
@@ -1817,7 +1803,7 @@ const removeSelectedColumns = tr => {
   if (isCellSelection(selection)) {
     const table = findTable(selection);
     if (table) {
-      const map = prosemirrorTablesContently.TableMap.get(table.node);
+      const map = prosemirrorTables.TableMap.get(table.node);
       const rect = map.rectBetween(
         selection.$anchorCell.pos - table.start,
         selection.$headCell.pos - table.start
@@ -1834,16 +1820,14 @@ const removeSelectedColumns = tr => {
       });
 
       for (let i = pmTableRect.right - 1; ; i--) {
-        prosemirrorTablesContently.removeColumn(tr, pmTableRect, i);
+        prosemirrorTables.removeColumn(tr, pmTableRect, i);
         if (i === pmTableRect.left) {
           break;
         }
         pmTableRect.table = pmTableRect.tableStart
           ? tr.doc.nodeAt(pmTableRect.tableStart - 1)
           : tr.doc;
-        pmTableRect.map = prosemirrorTablesContently.TableMap.get(
-          pmTableRect.table
-        );
+        pmTableRect.map = prosemirrorTables.TableMap.get(pmTableRect.table);
       }
       return cloneTr(tr);
     }
@@ -1867,7 +1851,7 @@ const removeSelectedRows = tr => {
   if (isCellSelection(selection)) {
     const table = findTable(selection);
     if (table) {
-      const map = prosemirrorTablesContently.TableMap.get(table.node);
+      const map = prosemirrorTables.TableMap.get(table.node);
       const rect = map.rectBetween(
         selection.$anchorCell.pos - table.start,
         selection.$headCell.pos - table.start
@@ -1884,16 +1868,14 @@ const removeSelectedRows = tr => {
       });
 
       for (let i = pmTableRect.bottom - 1; ; i--) {
-        prosemirrorTablesContently.removeRow(tr, pmTableRect, i);
+        prosemirrorTables.removeRow(tr, pmTableRect, i);
         if (i === pmTableRect.top) {
           break;
         }
         pmTableRect.table = pmTableRect.tableStart
           ? tr.doc.nodeAt(pmTableRect.tableStart - 1)
           : tr.doc;
-        pmTableRect.map = prosemirrorTablesContently.TableMap.get(
-          pmTableRect.table
-        );
+        pmTableRect.map = prosemirrorTables.TableMap.get(pmTableRect.table);
       }
 
       return cloneTr(tr);
@@ -2077,7 +2059,7 @@ const findCellRectClosestToPos = $pos => {
   const cell = findCellClosestToPos($pos);
   if (cell) {
     const table = findTableClosestToPos($pos);
-    const map = prosemirrorTablesContently.TableMap.get(table.node);
+    const map = prosemirrorTables.TableMap.get(table.node);
     const cellPos = cell.pos - table.start;
     return map.rectBetween(cellPos, cellPos);
   }
